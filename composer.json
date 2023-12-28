@@ -16,12 +16,23 @@
             "email": "vasildakov@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "VasilDakov\\Shipping\\": "src/"
-        }
+        },
+        "classmap": [
+            "src/"
+        ]
     },
-    "minimum-stability": "dev",
+    "autoload-dev": {
+        "psr-4": {
+            "VasilDakov\\ShippingTest\\": "test/"
+        },
+        "classmap": [
+            "test/"
+        ]
+    },
     "require": {
         "php": ">=8.1",
         "vasildakov/speedy": "^1.0@alpha",
