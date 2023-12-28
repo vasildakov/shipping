@@ -15,6 +15,21 @@ Using Composer:
 $ composer require vasildakov/shipping
 ```
 
+## Configuration
+
+...
+
+Add your adapters configuration to a .env file in the root of your project. Make sure the .env file is added to your .gitignore so it is not checked-in the code
+```dotenv
+SPEEDY_USERNAME="username"
+SPEEDY_PASSWORD="password"
+SPEEDY_LANGUAGE="EN"
+
+ECONT_USERNAME="username"
+ECONT_PASSWORD="password"
+```
+
+
 ## Usage
 
 ```php
@@ -33,3 +48,7 @@ $speedy = Shipping::create('Speedy');
 $econt  = Shipping::create(EcontAdapter::class);
 $speedy = Shipping::create(SpeedyAdapter::class);
 ```
+
+## License
+
+Code released under [the MIT license](https://github.com/vasildakov/shipping/blob/main/LICENSE)

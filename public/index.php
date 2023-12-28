@@ -16,5 +16,15 @@ if (php_sapi_name() === 'cli-server') {
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';
 
+$dotenv = \Dotenv\Dotenv::createImmutable('./');
+$dotenv->load();
+$dotenv->required([
+    'ECONT_USERNAME',
+    'ECONT_PASSWORD',
+])->notEmpty();
+
+
 $econt = Shipping::create('Econt');
-var_dump($econt->getCountries([]));
+$response = $econt->getCountries([]);
+
+dump($response);

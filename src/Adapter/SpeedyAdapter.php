@@ -29,9 +29,9 @@ final class SpeedyAdapter implements AdapterInterface
         if (null === $client) {
             $client = new Speedy(
                 new Configuration(
-                    username: '1995693',
-                    password: '9641464698',
-                    language: 'EN'
+                    username: $_ENV['SPEEDY_USERNAME'],
+                    password: $_ENV['SPEEDY_PASSWORD'],
+                    language: $_ENV['SPEEDY_LANGUAGE']
                 ),
                 new Client(),
                 new RequestFactory()

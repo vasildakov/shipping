@@ -9,6 +9,7 @@ use Laminas\Diactoros\RequestFactory;
 use Psr\Http\Client\ClientExceptionInterface;
 use VasilDakov\Econt\Configuration;
 use VasilDakov\Econt\Econt;
+use VasilDakov\Shipping\Model\Country;
 use VasilDakov\Shipping\Response;
 
 class EcontAdapter implements AdapterInterface
@@ -19,10 +20,11 @@ class EcontAdapter implements AdapterInterface
 
     public function __construct(?Econt $client = null)
     {
+
         if (! $client) {
             $configuration = new Configuration(
-                'iasp-dev',
-                '1Asp-dev'
+                username: $_ENV['ECONT_USERNAME'],
+                password: $_ENV['ECONT_PASSWORD'],
             );
 
             $client = new Econt($configuration, new Client(), new RequestFactory());
@@ -40,11 +42,30 @@ class EcontAdapter implements AdapterInterface
     }
 
 
+    /**
+     * @throws ClientExceptionInterface
+     */
     public function getCountries(): Response\GetCountriesResponse
     {
         $json = $this->client->getCountries();
-        return new Response\GetCountriesResponse();
+        $data = json_decode($json);
+
+        $response = new Response\GetCountriesResponse();
+
+        foreach ($data->countries as $row) {
+            $response->addCountry(
+                new Country(
+                    id: $row->id,
+                    name: $row->name,
+                    nameEn: $row->nameEn,
+                    isoAlpha2: $row->code2,
+                    isoAlpha3: $row->code3
+                )
+            );
+        }
+        return $response;
     }
+
 
     /**
      * @throws ClientExceptionInterface
