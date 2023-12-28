@@ -2966,7 +2966,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "vasildakov/speedy": 15,
-        "vasildakov/econt": 20
+        "vasildakov/econt": 20,
+        "jms/serializer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

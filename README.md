@@ -1,5 +1,6 @@
 # Shipping
 
+![example workflow](https://github.com/vasildakov/shipping/actions/workflows/php.yml/badge.svg)
 
 ## Features
 
