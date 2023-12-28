@@ -38,6 +38,13 @@
         "friendsofphp/php-cs-fixer": "dev-master",
         "phpmd/phpmd": "dev-master"
     },
+    "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "test-coverage": "./vendor/bin/phpunit --coverage-html ./build/coverage",
+        "cs-check": "vendor/bin/phpcs",
+        "cs-fix": "vendor/bin/phpcbf",
+        "static-analysis": "vendor/bin/psalm --shepherd --stats"
+    },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true
