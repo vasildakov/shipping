@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b09bdea435430a15fc32080bbc37869a",
+    "content-hash": "7c643971ea05d977fbd384bdbc0f6ee1",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -598,6 +598,71 @@
                 }
             ],
             "time": "2023-07-05T07:23:35+00:00"
+        },
+        {
+            "name": "eventsauce/object-hydrator",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EventSaucePHP/ObjectHydrator.git",
+                "reference": "f348b292666efa671a955ded8cda5ee5e6c5ee92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EventSaucePHP/ObjectHydrator/zipball/f348b292666efa671a955ded8cda5ee5e6c5ee92",
+                "reference": "f348b292666efa671a955ded8cda5ee5e6c5ee92",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "league/construct-finder": "^1.1",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "^1.7",
+                "phpunit/phpunit": "^9.5.11",
+                "ramsey/uuid": "^4.2"
+            },
+            "suggest": {
+                "league/construct-finder": "Find all classes in a directory for the best dumped hydrators."
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EventSauce\\ObjectHydrator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Converts structured data into strict objects.",
+            "keywords": [
+                "construction",
+                "constructor",
+                "hydration",
+                "mapper"
+            ],
+            "support": {
+                "issues": "https://github.com/EventSaucePHP/ObjectHydrator/issues",
+                "source": "https://github.com/EventSaucePHP/ObjectHydrator/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-16T08:36:19+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -2274,6 +2339,59 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "selective/transformer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/selective-php/transformer.git",
+                "reference": "f15f6f764f3a6968641424ef0019339076956e8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/selective-php/transformer/zipball/f15f6f764f3a6968641424ef0019339076956e8f",
+                "reference": "f15f6f764f3a6968641424ef0019339076956e8f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3",
+                "phpstan/phpstan": "^1",
+                "phpunit/phpunit": "^10",
+                "squizlabs/php_codesniffer": "^3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Selective\\Transformer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A strictly typed array transformer with dot-access, fluent interface and filters.",
+            "homepage": "https://github.com/selective-php/transformer",
+            "keywords": [
+                "array",
+                "converter",
+                "dot",
+                "dot-access",
+                "hydator",
+                "json",
+                "mapper",
+                "transformer",
+                "typed"
+            ],
+            "support": {
+                "issues": "https://github.com/selective-php/transformer/issues",
+                "source": "https://github.com/selective-php/transformer/tree/master"
+            },
+            "time": "2023-12-28T19:33:51+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -7751,13 +7869,16 @@
         "vasildakov/econt": 20,
         "jms/serializer": 20,
         "vlucas/phpdotenv": 20,
+        "eventsauce/object-hydrator": 20,
+        "selective/transformer": 20,
         "php-coveralls/php-coveralls": 20,
         "squizlabs/php_codesniffer": 20,
         "theseer/phpdox": 20,
         "vimeo/psalm": 20,
         "psalm/plugin-phpunit": 20,
         "friendsofphp/php-cs-fixer": 20,
-        "phpmd/phpmd": 20
+        "phpmd/phpmd": 20,
+        "symfony/var-dumper": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -4,27 +4,48 @@ declare(strict_types=1);
 
 namespace VasilDakov\Shipping\Response;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use VasilDakov\Shipping\Collection\ArrayCollection;
 use VasilDakov\Shipping\Model\Country;
 
-final class GetCountriesResponse
+class GetCountriesResponse
 {
-    private ArrayCollection $countries;
+    public ArrayCollection $countries;
 
-    public function __construct()
-    {
-        $this->countries = new ArrayCollection();
+    public function __construct(array $records = []
+        //#[CastListToType(Country::class)]
+    ) {
+        $this->countries = new ArrayCollection($records);
     }
 
-    public function addCountry(Country $country): void
+
+    public function findByName(string $name): ArrayCollection
     {
-        $this->countries[] = $country;
+
+        return $this->countries->filter(function (Country $country) use ($name) {
+            return $country->name == $name || $country->nameEn == $name;
+        });
+
+        //return (!$collection->isEmpty()) ? $collection->first() : null;
     }
 
-    public function getCountries(): Collection
+    public function findByIsoAlpha2(string $isoAlpha2):?Country
     {
-        return $this->countries;
+
+        $collection = $this->countries->filter(function (Country $country) use ($isoAlpha2) {
+            return $country->isoAlpha2 == $isoAlpha2;
+        });
+
+        return (!$collection->isEmpty()) ? $collection->first() : null;
+    }
+
+    public function findByIsoAlpha3(string $isoAlpha3):?Country
+    {
+
+        $collection = $this->countries->filter(function (Country $country) use ($isoAlpha3) {
+            return $country->isoAlpha3 == $isoAlpha3;
+        });
+
+        return (!$collection->isEmpty()) ? $collection->first() : null;
     }
 }
 

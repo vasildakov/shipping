@@ -1,5 +1,6 @@
 <?php
 
+use VasilDakov\Shipping\Request\GetCountriesRequest;
 use VasilDakov\Shipping\Shipping;
 
 chdir(dirname(__DIR__));
@@ -24,7 +25,14 @@ $dotenv->required([
 ])->notEmpty();
 
 
-$econt = Shipping::create('Econt');
-$response = $econt->getCountries([]);
+$econt  = Shipping::create('Econt');
+$speedy = Shipping::create('Speedy');
 
-dump($response);
+
+$response = $speedy->getCountries(new GetCountriesRequest('Bul'));
+
+foreach ($response->countries as $country) {
+    dump($country);
+}
+
+//dump($response);

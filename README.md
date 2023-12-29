@@ -49,6 +49,43 @@ $econt  = Shipping::create(EcontAdapter::class);
 $speedy = Shipping::create(SpeedyAdapter::class);
 ```
 
+## Services
+
+### 1 Countries
+
+```php 
+<?php
+
+$econt  = Shipping::create('Econt');
+
+$request = new GetCountriesRequest(name: 'Bul');
+
+/** @var GetCountriesResponse $response */
+$response = $econt->getCountries();
+
+foreach ($response->countries as $country) {
+    dump($country);
+}
+```
+
+### 2 Cities
+
+```php 
+<?php
+$econt  = Shipping::create('Econt');
+
+$request = new GetCitiesRequest(isoAlpha3: 'BGR');
+
+/** @var GetCitiesResponse $response */
+$response = $econt->getCities($request);
+
+foreach ($response->cities as $city) {
+    dump($city);
+}
+
+```
+
+
 ## License
 
 Code released under [the MIT license](https://github.com/vasildakov/shipping/blob/main/LICENSE)
