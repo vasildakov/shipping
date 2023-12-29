@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use VasilDakov\Econt\EcontInterface;
 use VasilDakov\Shipping\Adapter\EcontAdapter;
 use VasilDakov\Shipping\Model\Country;
+use VasilDakov\Shipping\Request\GetCountriesRequest;
 use VasilDakov\Shipping\Response\GetCountriesResponse;
 
 final class EcontAdapterTest extends TestCase
@@ -36,20 +37,16 @@ final class EcontAdapterTest extends TestCase
      */
     public function itCanGetCountries(): void
     {
-        $adapter = new EcontAdapter($this->client);
-
-        $json = file_get_contents(
-            './vendor/vasildakov/econt/data/GetCountriesResponse.json'
-        );
+        $adapter = $this->getEcontAdapter();
 
         $this->client
             ->expects(self::once())
             ->method('getCountries')
-            ->willReturn($json)
+            ->willReturn($this->getJson())
         ;
 
-        $response = $adapter->getCountries();
-        //var_dump($response);
+        $response = $adapter->getCountries(new GetCountriesRequest());
+
         self::assertInstanceOf(GetCountriesResponse::class, $response);
     }
 
@@ -58,11 +55,34 @@ final class EcontAdapterTest extends TestCase
      */
     public function itCanTransformCountries(): void
     {
-        $adapter = new EcontAdapter($this->client);
+        $adapter = $this->getEcontAdapter();
 
-        $json = file_get_contents(
-            './vendor/vasildakov/econt/data/GetCountriesResponse.json'
-        );
+        $this->client
+            ->expects(self::once())
+            ->method('getCountries')
+            ->willReturn($this->getJson())
+        ;
+
+        $response = $adapter->getCountries(new GetCountriesRequest());
+        $country = $response->countries->first();
+        $array = $country->toArray();
+
+        self::assertInstanceOf(Country::class, $country);
+        self::assertArrayHasKey('name', $array);
+        self::assertArrayHasKey('nameEn', $array);
+        self::assertArrayHasKey('isoAlpha2', $array);
+        self::assertArrayHasKey('isoAlpha3', $array);
+    }
+
+
+    /**
+     * @test
+     */
+    public function itCanFindCountry(): void
+    {
+        $adapter = $this->getEcontAdapter();
+
+        $json = $this->getJson();
 
         $this->client
             ->expects(self::once())
@@ -70,14 +90,26 @@ final class EcontAdapterTest extends TestCase
             ->willReturn($json)
         ;
 
-        $response = $adapter->getCountries();
-        $country = $response->countries[0];
+        $response = $adapter->getCountries(new GetCountriesRequest('Bulg'));
+        $country = $response->countries->first();
 
+        self::assertEquals(1, $response->countries->count());
         self::assertInstanceOf(Country::class, $country);
-        self::assertArrayHasKey('id', (array) $country);
-        self::assertArrayHasKey('name', (array) $country);
-        self::assertArrayHasKey('nameEn', (array) $country);
-        self::assertArrayHasKey('isoAlpha2', (array) $country);
-        self::assertArrayHasKey('isoAlpha3', (array) $country);
+        self::assertEquals('Bulgaria', $country->nameEn);
+        self::assertEquals('BGR', $country->isoAlpha3);
+    }
+
+
+    private function getEcontAdapter(): EcontAdapter
+    {
+        return new EcontAdapter($this->client);
+    }
+
+
+    private function getJson(): false|string
+    {
+        return file_get_contents(
+            './vendor/vasildakov/econt/data/GetCountriesResponse.json'
+        );
     }
 }

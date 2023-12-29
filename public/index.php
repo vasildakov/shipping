@@ -29,10 +29,10 @@ $econt  = Shipping::create('Econt');
 $speedy = Shipping::create('Speedy');
 
 
-$response = $speedy->getCountries(new GetCountriesRequest('Bul'));
+$response = $econt->getCountries(new GetCountriesRequest('Bul'));
 
 foreach ($response->countries as $country) {
     dump($country);
 }
 
-//dump($response);
+dump($response);
