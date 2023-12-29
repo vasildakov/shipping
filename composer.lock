@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3d79f6f809936b8ff7ecbdf92dbdea3",
+    "content-hash": "bf460aa8c0ff350f822e956c9d0e3397",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1168,16 +1168,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "dev-master",
+            "version": "3.29.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "4ff99e4cbba44cdbe57028ec2ccc874c8f61bbe9"
+                "reference": "111451f43abb448ce297361a8ab96a9591e848cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/4ff99e4cbba44cdbe57028ec2ccc874c8f61bbe9",
-                "reference": "4ff99e4cbba44cdbe57028ec2ccc874c8f61bbe9",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/111451f43abb448ce297361a8ab96a9591e848cd",
+                "reference": "111451f43abb448ce297361a8ab96a9591e848cd",
                 "shasum": ""
             },
             "require": {
@@ -1185,7 +1185,7 @@
                 "doctrine/instantiator": "^1.3.1 || ^2.0",
                 "doctrine/lexer": "^2.0 || ^3.0",
                 "jms/metadata": "^2.6",
-                "php": "^7.4 || ^8.0",
+                "php": "^7.2 || ^8.0",
                 "phpstan/phpdoc-parser": "^1.20"
             },
             "require-dev": {
@@ -1198,16 +1198,16 @@
                 "ocramius/proxy-manager": "^1.0 || ^2.0",
                 "phpbench/phpbench": "^1.0",
                 "phpstan/phpstan": "^1.0.2",
-                "phpunit/phpunit": "^9.0 || ^10.0",
+                "phpunit/phpunit": "^8.5.21 || ^9.0 || ^10.0",
                 "psr/container": "^1.0 || ^2.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
-                "symfony/expression-language": "^5.4 || ^6.0 || ^7.0",
-                "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
-                "symfony/form": "^5.4 || ^6.0 || ^7.0",
-                "symfony/translation": "^5.4 || ^6.0 || ^7.0",
-                "symfony/uid": "^5.4 || ^6.0 || ^7.0",
-                "symfony/validator": "^5.4 || ^6.0 || ^7.0",
-                "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
+                "symfony/dependency-injection": "^3.4 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/expression-language": "^3.2 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/filesystem": "^4.2 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/form": "^3.4 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/translation": "^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/uid": "^5.1 || ^6.0 || ^7.0",
+                "symfony/validator": "^3.1.9 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0 || ^7.0",
                 "twig/twig": "^1.34 || ^2.4 || ^3.0"
             },
             "suggest": {
@@ -1216,7 +1216,6 @@
                 "symfony/uid": "Required if you'd like to serialize UID objects.",
                 "symfony/yaml": "Required if you'd like to use the YAML metadata format."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1253,7 +1252,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/master"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.29.1"
             },
             "funding": [
                 {
@@ -1261,7 +1260,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-22T14:51:09+00:00"
+            "time": "2023-12-14T15:25:09+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -1350,16 +1349,16 @@
         },
         {
             "name": "laminas/laminas-hydrator",
-            "version": "4.16.x-dev",
+            "version": "4.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-hydrator.git",
-                "reference": "6312d724b0aa7b0fe39b899d4d8310ea05b9f5c7"
+                "reference": "43ccca88313fdcceca37865109dffc69ecd2cf8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/6312d724b0aa7b0fe39b899d4d8310ea05b9f5c7",
-                "reference": "6312d724b0aa7b0fe39b899d4d8310ea05b9f5c7",
+                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/43ccca88313fdcceca37865109dffc69ecd2cf8f",
+                "reference": "43ccca88313fdcceca37865109dffc69ecd2cf8f",
                 "shasum": ""
             },
             "require": {
@@ -1387,7 +1386,6 @@
                 "laminas/laminas-serializer": "^2.9, to use the SerializableStrategy",
                 "laminas/laminas-servicemanager": "^3.14, to support hydrator plugin manager usage"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laminas": {
@@ -1424,7 +1422,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-11-20T00:25:42+00:00"
+            "time": "2023-11-08T11:11:45+00:00"
         },
         {
             "name": "laminas/laminas-json",
@@ -2905,16 +2903,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "dev-master",
+            "version": "v5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "334f4952967f3ee6cdb2004e05e0bd01b525d56b"
+                "reference": "2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/334f4952967f3ee6cdb2004e05e0bd01b525d56b",
-                "reference": "334f4952967f3ee6cdb2004e05e0bd01b525d56b",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4",
+                "reference": "2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4",
                 "shasum": ""
             },
             "require": {
@@ -2934,12 +2932,11 @@
             "suggest": {
                 "ext-filter": "Required to use the boolean validator."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "bamarni-bin": {
                     "bin-links": true,
-                    "forward-command": false
+                    "forward-command": true
                 },
                 "branch-alias": {
                     "dev-master": "5.6-dev"
@@ -2974,7 +2971,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vlucas/phpdotenv/issues",
-                "source": "https://github.com/vlucas/phpdotenv/tree/master"
+                "source": "https://github.com/vlucas/phpdotenv/tree/v5.6.0"
             },
             "funding": [
                 {
@@ -2986,7 +2983,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-12T22:52:03+00:00"
+            "time": "2023-11-12T22:43:29+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -7803,11 +7800,8 @@
     "stability-flags": {
         "vasildakov/speedy": 15,
         "vasildakov/econt": 20,
-        "jms/serializer": 20,
-        "vlucas/phpdotenv": 20,
         "eventsauce/object-hydrator": 20,
         "selective/transformer": 20,
-        "laminas/laminas-hydrator": 20,
         "php-coveralls/php-coveralls": 20,
         "squizlabs/php_codesniffer": 20,
         "theseer/phpdox": 20,
