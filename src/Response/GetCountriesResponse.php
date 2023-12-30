@@ -24,28 +24,23 @@ class GetCountriesResponse
         return $this->countries->filter(function (Country $country) use ($name) {
             return $country->name == $name || $country->nameEn == $name;
         });
-
-        //return (!$collection->isEmpty()) ? $collection->first() : null;
     }
 
-    public function findByIsoAlpha2(string $isoAlpha2):?Country
+    public function findByIsoAlpha2(string $isoAlpha2): ArrayCollection
     {
 
-        $collection = $this->countries->filter(function (Country $country) use ($isoAlpha2) {
+        return $this->countries->filter(function (Country $country) use ($isoAlpha2) {
             return $country->isoAlpha2 == $isoAlpha2;
         });
-
-        return (!$collection->isEmpty()) ? $collection->first() : null;
     }
 
-    public function findByIsoAlpha3(string $isoAlpha3):?Country
+    public function findByIsoAlpha3(string $isoAlpha3): ArrayCollection
     {
 
-        $collection = $this->countries->filter(function (Country $country) use ($isoAlpha3) {
+        return $this->countries->filter(function (Country $country) use ($isoAlpha3) {
             return $country->isoAlpha3 == $isoAlpha3;
         });
 
-        return (!$collection->isEmpty()) ? $collection->first() : null;
+        // return (!$collection->isEmpty()) ? $collection->first() : null;
     }
 }
-

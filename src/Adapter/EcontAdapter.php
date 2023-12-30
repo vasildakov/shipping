@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace VasilDakov\Shipping\Adapter;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\CurlFactory;
-use GuzzleHttp\Handler\CurlHandler;
 use Laminas\Diactoros\RequestFactory;
 use Psr\Http\Client\ClientExceptionInterface;
 use VasilDakov\Econt\Configuration;
 use VasilDakov\Econt\Econt;
 use VasilDakov\Econt\EcontInterface;
+use VasilDakov\Econt\Request\GetCitiesRequest;
+use VasilDakov\Shipping\Model\City;
 use VasilDakov\Shipping\Model\Country;
 use VasilDakov\Shipping\Request;
 use VasilDakov\Shipping\Response;
@@ -28,7 +28,6 @@ class EcontAdapter implements AdapterInterface
 
     public function __construct(?EcontInterface $client = null)
     {
-
         if (! $client) {
             $configuration = new Configuration(
                 username: $_ENV['ECONT_USERNAME'],
@@ -51,6 +50,12 @@ class EcontAdapter implements AdapterInterface
         $this->client = $client;
     }
 
+
+    private function jsonDecode(string $json): array
+    {
+        return json_decode($json, true);
+    }
+
     /**
      * @throws ClientExceptionInterface
      */
@@ -65,12 +70,10 @@ class EcontAdapter implements AdapterInterface
      * @return Response\GetCountriesResponse
      * @throws ClientExceptionInterface
      */
-    public function getCountries(
-        Request\GetCountriesRequest $request
-    ): Response\GetCountriesResponse
+    public function getCountries(Request\GetCountriesRequest $request): Response\GetCountriesResponse
     {
         $json = $this->client->getCountries();
-        $data = json_decode($json, true);
+        $data = $this->jsonDecode($json);
 
         // transform properties to Shipping Model
         $transformer = new ArrayTransformer();
@@ -111,11 +114,55 @@ class EcontAdapter implements AdapterInterface
 
 
     /**
+     * @param Request\GetCitiesRequest $request
+     * @return Response\GetCitiesResponse
      * @throws ClientExceptionInterface
      */
-    public function getCities(array $data): string
+    public function getCities(Request\GetCitiesRequest $request): Response\GetCitiesResponse
     {
-        return $this->client->getCities($data);
+        $json = $this->client->getCities(new GetCitiesRequest(countryCode: $request->isoAlpha3));
+
+        $data = $this->jsonDecode($json);
+
+        // transform properties to Shipping Model
+        $transformer = new ArrayTransformer();
+        $transformer
+            ->map('id', 'id')
+            ->map('country', 'country')
+            ->map('postCode', 'postCode')
+            ->map('name', 'name')
+            ->map('nameEn', 'nameEn')
+        ;
+        $result = [];
+        foreach ($data['cities'] as $country) {
+            $result['cities'][] = $transformer->toArray($country);
+        }
+
+        $hydrator = new \Laminas\Hydrator\ObjectPropertyHydrator();
+        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+            $hydrator,
+            City::class
+        );
+        $hydrator->addStrategy(
+            'country',
+            new \Laminas\Hydrator\Strategy\HydratorStrategy(
+                new \Laminas\Hydrator\ReflectionHydrator(),
+                Country::class
+            )
+        );
+
+        $array = $strategy->hydrate($result['cities']);
+
+        if (null !== $request->name) {
+            $array = array_filter($array, function (City $city) use ($request) {
+                return
+                    str_starts_with($city->name, $request->name) ||
+                    str_starts_with($city->nameEn, $request->name)
+                    ;
+            });
+        }
+
+        return new Response\GetCitiesResponse($array);
     }
 
     /**

@@ -13,7 +13,7 @@ interface AdapterInterface
 
     public function getCountries(Request\GetCountriesRequest $request): Response\GetCountriesResponse;
 
-    public function getCities(array $data);
+    public function getCities(Request\GetCitiesRequest $request): Response\GetCitiesResponse;
 
     public function getOffices(array $data);
 

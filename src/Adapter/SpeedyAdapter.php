@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace VasilDakov\Shipping\Adapter;
 
 use EventSauce\ObjectHydrator\ObjectMapperUsingReflection;
+use Psr\Http\Client\ClientExceptionInterface;
 use Selective\Transformer\ArrayTransformer;
+use VasilDakov\Shipping\Model\City;
 use VasilDakov\Shipping\Model\Country;
 use VasilDakov\Shipping\Request\GetCountriesRequest;
 use VasilDakov\Speedy\Configuration;
 use VasilDakov\Speedy\Service\Location\Country\FindCountryRequest;
 use VasilDakov\Speedy\Service\Location\Site\FindSiteRequest;
+use VasilDakov\Speedy\Service\Location\Site\FindSiteResponse;
 use VasilDakov\Speedy\Speedy;
 use GuzzleHttp\Client;
 use Laminas\Diactoros\RequestFactory;
 use VasilDakov\Shipping\Response;
 use VasilDakov\Shipping\Request;
-
 
 /**
  * SpeedyAdapter
@@ -47,11 +49,19 @@ final class SpeedyAdapter implements AdapterInterface
         $this->client = $client;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return self::NAME;
     }
 
+    /**
+     * @param GetCountriesRequest $request
+     * @return Response\GetCountriesResponse
+     * @throws ClientExceptionInterface
+     */
     public function getCountries(Request\GetCountriesRequest $request): Response\GetCountriesResponse
     {
         $json = $this->client->findCountry(
@@ -80,16 +90,37 @@ final class SpeedyAdapter implements AdapterInterface
         $array = $strategy->hydrate($result['countries']);
 
         return new Response\GetCountriesResponse($array);
-
     }
 
-    public function getCities(array $data)
+    /**
+     * @param Request\GetCitiesRequest $request
+     * @return Response\GetCitiesResponse
+     * @throws ClientExceptionInterface
+     */
+    public function getCities(Request\GetCitiesRequest $request): Response\GetCitiesResponse
     {
         $object = new FindSiteRequest(
-            countryId: $data['countryId'],
-            name: $data['name']
+            countryId: $request->countryId,
+            name: $request->name
         );
-        return $this->client->findSite($object);
+
+        $result = $this->client->findSite($object);
+
+        $transformer = new ArrayTransformer();
+        $transformer
+            ->map('id', 'id')
+            ->map('countryId', 'countryId')
+            ->map('name', 'name')
+            ->map('nameEn', 'nameEn')
+            ->map('postCode', 'postCode')
+        ;
+
+        $records = [];
+        foreach ($result->getSites() as $site) {
+            $records['cities'][] = $transformer->toArray($site->toArray());
+        }
+
+        return new Response\GetCitiesResponse($records);
     }
 
     public function getOffices(array $data)

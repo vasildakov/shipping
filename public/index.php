@@ -1,5 +1,6 @@
 <?php
 
+use VasilDakov\Shipping\Request\GetCitiesRequest;
 use VasilDakov\Shipping\Request\GetCountriesRequest;
 use VasilDakov\Shipping\Shipping;
 
@@ -29,10 +30,13 @@ $econt  = Shipping::create('Econt');
 $speedy = Shipping::create('Speedy');
 
 
-$response = $econt->getCountries(new GetCountriesRequest('Bul'));
+// $response = $econt->getCountries(new GetCountriesRequest('Bul'));
+$response = $econt->getCities(new GetCitiesRequest('BGR', null, 'Sl'));
+//$response = $speedy->getCities(new GetCitiesRequest(100, 'Sl'));
 
-foreach ($response->countries as $country) {
-    dump($country);
+foreach ($response->cities as $city) {
+    dump($city); exit();
+    //exit();
 }
 
 dump($response);
