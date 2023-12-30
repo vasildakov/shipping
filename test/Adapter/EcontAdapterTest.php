@@ -100,6 +100,17 @@ final class EcontAdapterTest extends TestCase
     }
 
 
+    /**
+     * @test
+     */
+    public function itCanReturnName(): void
+    {
+        $adapter = new EcontAdapter();
+
+        self::assertEquals('Econt', $adapter->getName());
+    }
+
+
     private function getEcontAdapter(): EcontAdapter
     {
         return new EcontAdapter($this->client);

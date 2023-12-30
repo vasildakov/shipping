@@ -18,11 +18,22 @@ Using Composer:
 $ composer require vasildakov/shipping
 ```
 
+## Tests
+
+```bash
+$ ./vendor/bin/phpunit 
+
+# with code coverage
+$ ./vendor/bin/phpunit --coverage-html ./build/coverage
+```
+
 ## Configuration
 
 ...
 
-Add your adapters configuration to a .env file in the root of your project. Make sure the .env file is added to your .gitignore so it is not checked-in the code
+Add your adapters configuration to a `.env` file in the root of your project. Make sure the `.env` file is 
+added to your `.gitignore` so it is not checked-in the code
+
 ```dotenv
 SPEEDY_USERNAME="username"
 SPEEDY_PASSWORD="password"
