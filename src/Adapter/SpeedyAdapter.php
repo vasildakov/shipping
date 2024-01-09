@@ -12,6 +12,8 @@ use VasilDakov\Shipping\Model\Country;
 use VasilDakov\Shipping\Request\GetCountriesRequest;
 use VasilDakov\Speedy\Configuration;
 use VasilDakov\Speedy\Service\Location\Country\FindCountryRequest;
+use VasilDakov\Speedy\Service\Location\Office\FindOfficeRequest;
+use VasilDakov\Speedy\Service\Location\Office\FindOfficeResponse;
 use VasilDakov\Speedy\Service\Location\Site\FindSiteRequest;
 use VasilDakov\Speedy\Service\Location\Site\FindSiteResponse;
 use VasilDakov\Speedy\Speedy;
@@ -65,7 +67,7 @@ final class SpeedyAdapter implements AdapterInterface
     public function getCountries(Request\GetCountriesRequest $request): Response\GetCountriesResponse
     {
         $json = $this->client->findCountry(
-            new FindCountryRequest(name: $request->name)
+            new FindCountryRequest(name: 'Bulgaria')
         );
         $data = json_decode($json, true);
 
@@ -78,10 +80,7 @@ final class SpeedyAdapter implements AdapterInterface
             ->map('isoAlpha3', 'isoAlpha3')
         ;
 
-        $result = [];
-        foreach ($data['countries'] as $country) {
-            $result['countries'][] = $transformer->toArray($country);
-        }
+        $result['countries'] = $transformer->toArray($data);
 
         $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
             new \Laminas\Hydrator\ObjectPropertyHydrator(),
@@ -104,7 +103,8 @@ final class SpeedyAdapter implements AdapterInterface
             name: $request->name
         );
 
-        $result = $this->client->findSite($object);
+        $json = $this->client->findSite($object);
+        $data = $this->jsonDecode($json);
 
         $transformer = new ArrayTransformer();
         $transformer
@@ -115,21 +115,39 @@ final class SpeedyAdapter implements AdapterInterface
             ->map('postCode', 'postCode')
         ;
 
-        $records = [];
-        foreach ($result->getSites() as $site) {
-            $records['cities'][] = $transformer->toArray($site->toArray());
-        }
+        $result['cities'] = $transformer->toArrays($data['sites']);
 
-        return new Response\GetCitiesResponse($records);
+        return new Response\GetCitiesResponse($result);
     }
 
-    public function getOffices(array $data)
+    public function getOffices(Request\GetOfficesRequest $request): Response\GetOfficesResponse
     {
-        // TODO: Implement getOffices() method.
+        $object = new FindOfficeRequest(
+            siteId: $request->cityId
+        );
+
+        $json = $this->client->findOffice($object);
+        $data = $this->jsonDecode($json);
+
+        $transformer = new ArrayTransformer();
+        $transformer
+            ->map('id', 'id')
+            ->map('name', 'name')
+            ->map('nameEn', 'nameEn')
+        ;
+
+        $result['offices'] = $transformer->toArrays($data['offices']);
+
+        return new Response\GetOfficesResponse($result);
     }
 
     public function track(array $data)
     {
         // TODO: Implement track() method.
+    }
+
+    private function jsonDecode(string $json): array
+    {
+        return json_decode($json, true);
     }
 }

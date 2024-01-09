@@ -20,7 +20,7 @@ use Selective\Transformer\ArrayTransformer;
 use function array_filter;
 use function str_starts_with;
 
-class EcontAdapter implements AdapterInterface
+final class EcontAdapter implements AdapterInterface
 {
     private const NAME = 'Econt';
 
@@ -64,7 +64,6 @@ class EcontAdapter implements AdapterInterface
         return $this->client->getClientProfiles();
     }
 
-
     /**
      * @param Request\GetCountriesRequest $request
      * @return Response\GetCountriesResponse
@@ -84,10 +83,7 @@ class EcontAdapter implements AdapterInterface
             ->map('isoAlpha2', 'code2')
             ->map('isoAlpha3', 'code3')
         ;
-        $result = [];
-        foreach ($data['countries'] as $country) {
-            $result['countries'][] = $transformer->toArray($country);
-        }
+        $result['countries'] = $transformer->toArrays($data['countries']);
 
         // $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
         // $hydrator = new \Laminas\Hydrator\ObjectPropertyHydrator();
@@ -124,7 +120,7 @@ class EcontAdapter implements AdapterInterface
 
         $data = $this->jsonDecode($json);
 
-        // transform properties to Shipping Model
+        // transform rules
         $transformer = new ArrayTransformer();
         $transformer
             ->map('id', 'id')
@@ -133,11 +129,11 @@ class EcontAdapter implements AdapterInterface
             ->map('name', 'name')
             ->map('nameEn', 'nameEn')
         ;
-        $result = [];
-        foreach ($data['cities'] as $country) {
-            $result['cities'][] = $transformer->toArray($country);
-        }
 
+        // transform array to shipping model
+        $result['cities'] = $transformer->toArrays($data['cities']);
+
+        // hydrate the array
         $hydrator = new \Laminas\Hydrator\ObjectPropertyHydrator();
         $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
             $hydrator,
@@ -167,9 +163,10 @@ class EcontAdapter implements AdapterInterface
 
     /**
      */
-    public function getOffices(array $data): string
+    public function getOffices(Request\GetOfficesRequest $request): Response\GetOfficesResponse
     {
-        return $this->client->getOffices($data);
+        //return $this->client->getOffices($data);
+        return new Response\GetOfficesResponse();
     }
 
     public function calculate()

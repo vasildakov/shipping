@@ -2,6 +2,7 @@
 
 use VasilDakov\Shipping\Request\GetCitiesRequest;
 use VasilDakov\Shipping\Request\GetCountriesRequest;
+use VasilDakov\Shipping\Request\GetOfficesRequest;
 use VasilDakov\Shipping\Shipping;
 
 chdir(dirname(__DIR__));
@@ -31,12 +32,10 @@ $speedy = Shipping::create('Speedy');
 
 
 // $response = $econt->getCountries(new GetCountriesRequest('Bul'));
-$response = $econt->getCities(new GetCitiesRequest('BGR', null, 'Sl'));
+//$response = $econt->getCities(new GetCitiesRequest('BGR', null, 'Sl'));
 //$response = $speedy->getCities(new GetCitiesRequest(100, 'Sl'));
 
-foreach ($response->cities as $city) {
-    dump($city); exit();
-    //exit();
-}
+
+$response = $speedy->getOffices(new GetOfficesRequest(countryId: null, cityId: 68134));
 
 dump($response);

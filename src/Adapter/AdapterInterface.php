@@ -15,7 +15,7 @@ interface AdapterInterface
 
     public function getCities(Request\GetCitiesRequest $request): Response\GetCitiesResponse;
 
-    public function getOffices(array $data);
+    public function getOffices(Request\GetOfficesRequest $request): Response\GetOfficesResponse;
 
     public function track(array $data);
 }

@@ -14,12 +14,12 @@ use VasilDakov\Shipping\Exception\RuntimeException;
  * @copyright 2009-2024 Neutrino.bg
  * @version   1.0
  */
-class Shipping implements ShippingInterface
+final class Shipping implements ShippingInterface
 {
     public static function create(string $name): AdapterInterface
     {
-        $class = static::getClassName($name);
-        if (! static::canCreate($class)) {
+        $class = Shipping::getClassName($name);
+        if (! Shipping::canCreate($class)) {
             // throw new RuntimeException("Class '$class' not found");
             throw new RuntimeException("Invalid or non existing adapter");
         }
@@ -43,11 +43,6 @@ class Shipping implements ShippingInterface
 
     private static function getClassName(string $name): string
     {
-        // If the class starts with \ or Omnipay\, assume it's a FQCN
-        /*if (str_starts_with($name, '\\') || str_starts_with($name, 'Shipping\\Adapter\\')) {
-            return $name;
-        }*/
-
         if (0 === strpos($name, '\\') || 0 === strpos($name, 'VasilDakov\\Shipping\\Adapter\\')) {
             return $name;
         }
