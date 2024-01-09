@@ -10,11 +10,16 @@ use VasilDakov\Shipping\Request\GetOfficesRequest;
 use VasilDakov\Shipping\Response\GetCitiesResponse;
 use VasilDakov\Shipping\Response\GetCountriesResponse;
 use VasilDakov\Shipping\Response\GetOfficesResponse;
+use VasilDakov\Speedy\SpeedyInterface;
 
 final class SpeedyAdapterTest extends TestCase
 {
+    protected SpeedyInterface $speedy;
+
     protected function setUp(): void
     {
+        $this->speedy = $this->createMock(SpeedyInterface::class);
+
         parent::setUp();
     }
 
@@ -33,7 +38,7 @@ final class SpeedyAdapterTest extends TestCase
      */
     public function itCanReturnName(): void
     {
-        $adapter = new SpeedyAdapter();
+        $adapter = new SpeedyAdapter($this->speedy);
 
         self::assertEquals('Speedy', $adapter->getName());
     }
@@ -44,8 +49,12 @@ final class SpeedyAdapterTest extends TestCase
     public function itCanGetCountries(): void
     {
         // Arrange
-        $adapter = new SpeedyAdapter();
+        $json = file_get_contents('./vendor/vasildakov/speedy/test/Assets/Countries.json');
+
+        $adapter = new SpeedyAdapter($this->speedy);
         $request = new GetCountriesRequest();
+
+        $this->speedy->expects(self::once())->method('findCountry')->willReturn($json);
 
         // Act
         $response = $adapter->getCountries($request);
@@ -61,8 +70,10 @@ final class SpeedyAdapterTest extends TestCase
     public function itCanGetCities(): void
     {
         // Arrange
-        $adapter = new SpeedyAdapter();
+        $json = $this->getSitesJson();
+        $adapter = new SpeedyAdapter($this->speedy);
         $request = new GetCitiesRequest(isoAlpha3: 'BGR', countryId: 100);
+        $this->speedy->expects(self::once())->method('findSite')->willReturn($json);
 
         // Act
         $response = $adapter->getCities($request);
@@ -78,13 +89,46 @@ final class SpeedyAdapterTest extends TestCase
     public function itCanGetOfficesByCity(): void
     {
         // Arrange
-        $adapter = new SpeedyAdapter();
+        $json = $this->getOfficesJson();
+        $adapter = new SpeedyAdapter($this->speedy);
         $request = new GetOfficesRequest(countryId: null, cityId: 68134);
+        $this->speedy->expects(self::once())->method('findOffice')->willReturn($json);
 
         // Act
         $response = $adapter->getOffices($request);
 
         // Assert
         self::assertInstanceOf(GetOfficesResponse::class, $response);
+    }
+
+    private function getSitesJson(): false|string
+    {
+        return json_encode([
+            'sites' => [
+                [
+                    "id" => 1,
+                    "countryId" => 2,
+                    "mainSiteId" => 3,
+                    "type" => "Type",
+                    "typeEn" => "Type in English",
+                    "name" => "Name",
+                    "nameEn" => "Name in English",
+                ]
+            ]
+        ]);
+    }
+
+    private function getOfficesJson(): false|string
+    {
+        return json_encode([
+            'offices' => [
+                [
+                    "id" => 1,
+                    "countryId" => 2,
+                    "name" => "Name",
+                    "nameEn" => "Name in English",
+                ]
+            ]
+        ]);
     }
 }

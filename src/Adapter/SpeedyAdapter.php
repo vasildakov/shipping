@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace VasilDakov\Shipping\Adapter;
 
-use EventSauce\ObjectHydrator\ObjectMapperUsingReflection;
 use Psr\Http\Client\ClientExceptionInterface;
 use Selective\Transformer\ArrayTransformer;
-use VasilDakov\Shipping\Model\City;
 use VasilDakov\Shipping\Model\Country;
 use VasilDakov\Shipping\Request\GetCountriesRequest;
 use VasilDakov\Speedy\Configuration;
 use VasilDakov\Speedy\Service\Location\Country\FindCountryRequest;
 use VasilDakov\Speedy\Service\Location\Office\FindOfficeRequest;
-use VasilDakov\Speedy\Service\Location\Office\FindOfficeResponse;
 use VasilDakov\Speedy\Service\Location\Site\FindSiteRequest;
-use VasilDakov\Speedy\Service\Location\Site\FindSiteResponse;
 use VasilDakov\Speedy\Speedy;
 use GuzzleHttp\Client;
 use Laminas\Diactoros\RequestFactory;
 use VasilDakov\Shipping\Response;
 use VasilDakov\Shipping\Request;
+use VasilDakov\Speedy\SpeedyInterface;
 
 /**
  * SpeedyAdapter
@@ -33,9 +30,9 @@ final class SpeedyAdapter implements AdapterInterface
 {
     private const NAME = 'Speedy';
 
-    private ?Speedy $client;
+    private ?SpeedyInterface $client;
 
-    public function __construct(?Speedy $client = null)
+    public function __construct(?SpeedyInterface $client = null)
     {
         if (null === $client) {
             $client = new Speedy(

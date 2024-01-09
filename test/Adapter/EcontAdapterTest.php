@@ -21,7 +21,6 @@ final class EcontAdapterTest extends TestCase
         parent::setUp();
     }
 
-
     /**
      * @test
      */

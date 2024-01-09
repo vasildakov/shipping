@@ -46,6 +46,21 @@ ECONT_PASSWORD="password"
 
 ## Usage
 
+Here is a simple example of how to use Shipping. As you can see, Shipping has a consistent, well thought out API. 
+As much as possible, we try to abstract the differences between the various shipping gateways.
+```php 
+<?php
+
+$econt  = Shipping::create('Econt');
+
+$request = new GetCountriesRequest(name: 'Bul');
+
+/** @var GetCountriesResponse $response */
+$response = $econt->getCountries();
+
+```
+
+
 ```php
 <?php
 
@@ -62,6 +77,7 @@ $speedy = Shipping::create('Speedy');
 $econt  = Shipping::create(EcontAdapter::class);
 $speedy = Shipping::create(SpeedyAdapter::class);
 ```
+
 
 ## Services
 
@@ -95,6 +111,23 @@ $response = $econt->getCities($request);
 
 foreach ($response->cities as $city) {
     dump($city);
+}
+
+```
+
+### 3 Offices
+
+```php 
+<?php
+$econt  = Shipping::create('Econt');
+
+$request = new GetOfficesRequest(isoAlpha3: 'BGR', name: null);
+
+/** @var GetCitiesResponse $response */
+$response = $econt->getOffices($request);
+
+foreach ($response->offices as $office) {
+    dump($office);
 }
 
 ```
