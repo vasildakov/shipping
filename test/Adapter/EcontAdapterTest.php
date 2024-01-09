@@ -6,9 +6,12 @@ namespace VasilDakov\ShippingTest\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use VasilDakov\Econt\EcontInterface;
+use VasilDakov\Shipping\Model\City;
 use VasilDakov\Shipping\Adapter\EcontAdapter;
 use VasilDakov\Shipping\Model\Country;
+use VasilDakov\Shipping\Request\GetCitiesRequest;
 use VasilDakov\Shipping\Request\GetCountriesRequest;
+use VasilDakov\Shipping\Response\GetCitiesResponse;
 use VasilDakov\Shipping\Response\GetCountriesResponse;
 
 final class EcontAdapterTest extends TestCase
@@ -38,11 +41,7 @@ final class EcontAdapterTest extends TestCase
     {
         $adapter = $this->getEcontAdapter();
 
-        $this->client
-            ->expects(self::once())
-            ->method('getCountries')
-            ->willReturn($this->getJson())
-        ;
+        $this->client->expects(self::once())->method('getCountries')->willReturn($this->getCountriesJson());
 
         $response = $adapter->getCountries(new GetCountriesRequest());
 
@@ -56,11 +55,7 @@ final class EcontAdapterTest extends TestCase
     {
         $adapter = $this->getEcontAdapter();
 
-        $this->client
-            ->expects(self::once())
-            ->method('getCountries')
-            ->willReturn($this->getJson())
-        ;
+        $this->client->expects(self::once())->method('getCountries')->willReturn($this->getCountriesJson());
 
         $response = $adapter->getCountries(new GetCountriesRequest());
         $country = $response->countries->first();
@@ -73,21 +68,13 @@ final class EcontAdapterTest extends TestCase
         self::assertArrayHasKey('isoAlpha3', $array);
     }
 
-
     /**
      * @test
      */
     public function itCanFindCountry(): void
     {
         $adapter = $this->getEcontAdapter();
-
-        $json = $this->getJson();
-
-        $this->client
-            ->expects(self::once())
-            ->method('getCountries')
-            ->willReturn($json)
-        ;
+        $this->client->expects(self::once())->method('getCountries')->willReturn($this->getCountriesJson());
 
         $response = $adapter->getCountries(new GetCountriesRequest('Bulg'));
         $country = $response->countries->first();
@@ -96,6 +83,28 @@ final class EcontAdapterTest extends TestCase
         self::assertInstanceOf(Country::class, $country);
         self::assertEquals('Bulgaria', $country->nameEn);
         self::assertEquals('BGR', $country->isoAlpha3);
+    }
+
+
+    public function testItCanGetCities(): void
+    {
+        $adapter = $this->getEcontAdapter();
+        $this->client->expects(self::once())->method('getCities')->willReturn($this->getCitiesJson());
+
+        $response = $adapter->getCities(new GetCitiesRequest('BGR'));
+        self::assertInstanceOf(GetCitiesResponse::class, $response);
+    }
+
+    public function testItCanFindCityByName(): void
+    {
+        $adapter = $this->getEcontAdapter();
+        $this->client->expects(self::once())->method('getCities')->willReturn($this->getCitiesJson());
+
+        $response = $adapter->getCities(new GetCitiesRequest(isoAlpha3: 'LUX', countryId: null, name: 'Alscheid'));
+        $city = $response->cities->first();
+
+        self::assertInstanceOf(City::class, $city);
+        self::assertEquals('Alscheid', $city->nameEn);
     }
 
 
@@ -116,10 +125,17 @@ final class EcontAdapterTest extends TestCase
     }
 
 
-    private function getJson(): false|string
+    private function getCountriesJson(): false|string
     {
         return file_get_contents(
             './vendor/vasildakov/econt/data/GetCountriesResponse.json'
+        );
+    }
+
+    public function getCitiesJson(): false|string
+    {
+        return file_get_contents(
+            './vendor/vasildakov/econt/data/GetCitiesResponse.json'
         );
     }
 }
